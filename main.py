@@ -3,19 +3,26 @@ from discord.ext import commands
 import os
 from dotenv import load_dotenv
 import gspread
+import json
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 # Tener el archivo en el mismo directorio que este script o proporcionar la ruta completa al archivo de credenciales en la variable de entorno GOOGLE_CREDENTIALS
-CREDENTIALS_FILE = os.getenv('GOOGLE_CREDENTIALS')
+CREDENTIALS_FILE = "credentials.json"  # Cambiar a la ruta de tu archivo de credenciales
 
 # Definir los nombres de las hojas de cálculo a utilizar inicialmente, luego se pueden cambiar con los comandos del bot 
-SHEET_ENCUESTA_INICIAL = "Copia de Encuesta inicial 1c2026 (respuestas)"
-SHEET_PLANILLA = "Copia de 1c2026"
+SHEET_ENCUESTA_INICIAL = os.getenv('ENCUENSTA_INICIAL_SHEET_NAME')
+SHEET_PLANILLA = os.getenv('PLANILLA_PRINCIPAL_SHEET_NAME')
 
 # Conexión a Google Sheets
 try:
-   gc = gspread.service_account(filename=CREDENTIALS_FILE)
+   if "GOOGLE_CREDENTIALS" in os.environ:
+      # Si la variable de entorno GOOGLE_CREDENTIALS está definida, usarla para la autenticación
+      credentials_dict = json.loads(os.environ["GOOGLE_CREDENTIALS"])
+      gc = gspread.service_account_from_dict(credentials_dict)
+   else:
+      # Si no, usar el archivo de credenciales local
+      gc = gspread.service_account(filename=CREDENTIALS_FILE)
    sheet_encuesta_inicial = gc.open(SHEET_ENCUESTA_INICIAL).sheet1
    sheet_planilla = gc.open(SHEET_PLANILLA).sheet1
    print("Conexión exitosa a Google Sheets.")
