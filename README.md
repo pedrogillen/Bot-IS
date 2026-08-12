@@ -43,3 +43,5 @@ Modifica la planilla administrativa
 ## Cosas a tener en cuenta
 
 * El bot utiliza una cuenta de Google Services para acceder y modificar las planillas, para eso necesita acceso de editor. La cuenta es: bot-discord-sheets@bot-discord-is.iam.gserviceaccount.com
+
+* Para añadir el bot a un servidor usar el siguiente link: https://discord.com/oauth2/authorize?client_id=1536870107303903303&permissions=268511232&integration_type=0&scope=bot
