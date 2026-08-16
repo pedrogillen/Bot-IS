@@ -106,13 +106,13 @@ async def cambiar_rol_error(ctx, error):
 # Cambios de planillas, es importante que las planillas tengan la misma estructura que las planillas originales, sino el bot no va a funcionar correctamente. Tambien es importante darle acceso a la cuenta de servicio de Google Sheets a las nuevas planillas, sino el bot no va a poder acceder a ellas. La misma es: bot-discord-sheets@bot-discord-is.iam.gserviceaccount.com
 @bot.command()
 @commands.has_role("Docentes")
-async def cambiar_planilla_encuesta(ctx, new_sheet_name: str):
+async def cambiar_planilla_encuesta(ctx, *, new_sheet_name: str):
    global sheet_encuesta_inicial
    try:
       sheet_encuesta_inicial = gc.open(new_sheet_name).sheet1
       await ctx.send(f"Se ha cambiado la planilla de encuesta inicial a: {new_sheet_name}")
    except Exception as e:
-      await ctx.send(f"No se pudo cambiar la planilla de encuesta inicial. Error: {e}")
+      await ctx.send(f"No se pudo cambiar la planilla de encuesta inicial a: {new_sheet_name}. Error: {e}")
 
 @cambiar_planilla_encuesta.error
 async def cambiar_planilla_encuesta_error(ctx, error):
@@ -123,13 +123,13 @@ async def cambiar_planilla_encuesta_error(ctx, error):
 
 @bot.command()
 @commands.has_role("Docentes")
-async def cambiar_planilla_principal(ctx, new_sheet_name: str):
+async def cambiar_planilla_principal(ctx, *, new_sheet_name: str):
    global sheet_planilla
    try:
       sheet_planilla = gc.open(new_sheet_name).sheet1
       await ctx.send(f"Se ha cambiado la planilla principal a: {new_sheet_name}")
    except Exception as e:
-      await ctx.send(f"No se pudo cambiar la planilla principal. Error: {e}")
+      await ctx.send(f"No se pudo cambiar la planilla principal a: {new_sheet_name}. Error: {e}")
 
 @cambiar_planilla_principal.error
 async def cambiar_planilla_principal_error(ctx, error):
