@@ -14,6 +14,9 @@ CREDENTIALS_FILE = "credentials.json"  # Cambiar a la ruta de tu archivo de cred
 SHEET_ENCUESTA_INICIAL = os.getenv('ENCUENSTA_INICIAL_SHEET_NAME')
 SHEET_PLANILLA = os.getenv('PLANILLA_PRINCIPAL_SHEET_NAME')
 
+# ID del servidor de Discord en el cual se tendra el privilegio para cambiar el rol y las planillas.
+SERVER_ID = os.getenv('DISCORD_SERVER_ID')
+
 # Conexión a Google Sheets
 try:
    if "GOOGLE_CREDENTIALS" in os.environ:
@@ -90,6 +93,9 @@ async def recibir_rol(ctx, padron: str):
 @bot.command()
 @commands.has_role("Docentes")
 async def cambiar_rol_a_dar(ctx, new_role: str):
+   if ctx.guild.id != int(SERVER_ID):
+      await ctx.send("Este comando solo puede ser usado en el servidor autorizado.")
+      return
    global current_role
    current_role = new_role
    await ctx.send(f"El rol actual ha sido cambiado a: {current_role}")
@@ -107,6 +113,9 @@ async def cambiar_rol_error(ctx, error):
 @bot.command()
 @commands.has_role("Docentes")
 async def cambiar_planilla_encuesta(ctx, *, new_sheet_name: str):
+   if ctx.guild.id != int(SERVER_ID):
+      await ctx.send("Este comando solo puede ser usado en el servidor autorizado.")
+      return
    global sheet_encuesta_inicial
    try:
       sheet_encuesta_inicial = gc.open(new_sheet_name).sheet1
@@ -124,6 +133,9 @@ async def cambiar_planilla_encuesta_error(ctx, error):
 @bot.command()
 @commands.has_role("Docentes")
 async def cambiar_planilla_principal(ctx, *, new_sheet_name: str):
+   if ctx.guild.id != int(SERVER_ID):
+      await ctx.send("Este comando solo puede ser usado en el servidor autorizado.")
+      return
    global sheet_planilla
    try:
       sheet_planilla = gc.open(new_sheet_name).sheet1
